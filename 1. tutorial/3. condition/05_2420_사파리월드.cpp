@@ -5,7 +5,7 @@
 using namespace std;
 
 int main() {
-    long N, M;
+    long N, M; // 20억 간의 계산이 int의 범위를 벗어날 수 있다
     cin >> N >> M;
 
     if (N > M) cout << N - M << endl;
