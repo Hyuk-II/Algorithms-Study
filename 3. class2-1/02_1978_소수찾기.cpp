@@ -26,6 +26,7 @@ int main()
                 isPrime = 0;
                 break;
             }
+            // 2부터 자기자신 전까지 모든 수로 한번씩 나눠볼 때 나누어 떨어지는 수가 있으면 소수가 아니다
         }
         if (arr[i]==2) cnt++;
         if (isPrime == 1) cnt++;
