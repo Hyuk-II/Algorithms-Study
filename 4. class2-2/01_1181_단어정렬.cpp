@@ -9,8 +9,8 @@ using namespace std;
 int compare(string a, string b) {
     if (a.length() == b.length()) {
         return a < b;
-    }
-    else return a.length() < b.length();
+    } // 길이가 같으면 사전 순 
+    else return a.length() < b.length(); // 길이가 다르면 길이 순
 }
 
 string str[20000];
