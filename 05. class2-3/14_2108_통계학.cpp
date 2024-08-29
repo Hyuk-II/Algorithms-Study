@@ -1,153 +1,60 @@
-// 2024.08.27
+// 2024.08.29
 
 #include <algorithm>
 #include <cmath>
 #include <iostream>
+#include <map>
+#include <vector>
 using namespace std;
 
-class Integer {
-  public:
-    int num;
-    int cnt;
-    static int max_cnt;
-    static int max_freq_num;
-    Integer *left;
-    Integer *right;
-
-    Integer(int n) {
-        num = n;
-        cnt = 1;
-        left = NULL;
-        right = NULL;
-    }
-
-    double sum() {
-        double sum = 0.0;
-        sum += this->cnt * this->num;
-
-        if (this->left) {
-            sum += this->left->sum();
-        }
-
-        if (this->right) {
-            sum += this->right->sum();
-        }
-
-        return sum;
-    }
-
-    int range() {
-        int min, max;
-        Integer *tmp = this;
-
-        while (tmp->left) {
-            tmp = tmp->left;
-        }
-        min = tmp->num;
-
-        tmp = this;
-        while (tmp->right) {
-            tmp = tmp->right;
-        }
-        max = tmp->num;
-
-        return max - min;
-    }
-
-    int max_freq() {
-        if (this->left) {
-            this->left->max_freq();
-        }
-
-        if (this->cnt == max_cnt) {
-            if (max_freq_num == 10000) {
-                max_freq_num = this->num;
-            } else if (max_freq_num != this->num) {
-                max_freq_num = this->num;
-                return max_freq_num;
-            }
-        }
-
-        if (this->right) {
-            this->right->max_freq();
-        }
-
-        return max_freq_num;
-    }
-
-    void print() {
-        if (this->left) {
-            this->left->print();
-        }
-
-        cout << "num : " << this->num << " " << "cnt : " << this->cnt << endl;
-
-        if (this->right) {
-            this->right->print();
-        }
-    }
-};
-
-int Integer::max_cnt = 0;
-int Integer::max_freq_num = 10000;
-
 int main() {
-    Integer *root = NULL;
-    int *num_list;
-
     int N;
     cin >> N;
-    num_list = new int[N];
+    vector<int> num_list(N);
 
     for (int i = 0; i < N; i++) {
-        int num;
-        cin >> num;
-        num_list[i] = num;
+        cin >> num_list[i];
+    }
 
-        if (root == NULL) {
-            root = new Integer(num);
-            Integer::max_cnt = 1;
-        } else {
-            Integer *tmp = root;
+    double sum = 0;
 
-            while (1) {
-                if (num == tmp->num) {
-                    tmp->cnt++;
+    for (int i = 0; i < N; i++) {
+        sum += num_list[i];
+    }
 
-                    if (tmp->cnt > Integer::max_cnt) {
-                        Integer::max_cnt = tmp->cnt;
-                    }
+    cout << floor(sum / N + 0.5) << endl; // 산술평균
 
-                    break;
-                }
+    sort(num_list.begin(), num_list.end());
 
-                else if (num > tmp->num) {
-                    if (tmp->right == NULL) {
-                        tmp->right = new Integer(num);
-                        break;
-                    }
-                    tmp = tmp->right;
-                }
+    cout << num_list[N / 2] << endl; // 중앙값
 
-                else if (num < tmp->num) {
-                    if (tmp->left == NULL) {
-                        tmp->left = new Integer(num);
-                        break;
-                    }
-                    tmp = tmp->left;
-                }
+    map<int, int> num_freq;
+    map<int, int>::iterator it;
+
+    for (int i = 0; i < N; i++) {
+        num_freq[num_list[i]] += 1;
+    }
+
+    int max = 0;
+    for (it = num_freq.begin(); it != num_freq.end(); it++) {
+        if (it->second > max) {
+            max = it->second;
+        }
+    }
+
+    int ret = 0;
+    for (it = num_freq.begin(); it != num_freq.end(); it++) {
+        if (it->second == max) {
+            if (ret == 0) {
+                ret = it->first;
+            } else {
+                ret = it->first;
+                break;
             }
         }
     }
 
-    // root->print();
-    sort(num_list, num_list + N);
+    cout << ret << endl; // 최빈값;
 
-    cout << floor((root->sum() / (double)N) + 0.5) << endl; // 산술평균
-    cout << num_list[N / 2] << endl;                        // 중앙값
-    cout << root->max_freq() << endl;                       // 최빈값
-    cout << root->range() << endl;                          // 범위
-
-    delete[] num_list;
-    return 0;
+    cout << num_list[N - 1] - num_list[0] << endl; // 범위
 }
