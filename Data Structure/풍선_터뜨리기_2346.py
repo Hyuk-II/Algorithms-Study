@@ -2,6 +2,10 @@
 # 맨 왼쪽 값을 오른쪽으로 이동시 (양수로 회전) -> 터뜨려야 하는 값이 맨 마지막 -> deque pop
 # 맨 오른쪽 값을 왼쪽으로 이동시 (음수로 회전) -> 터뜨려야 하는 값이 맨 앞 -> deque popleft
 
+# class 구현보다, enumerate를 통한 index 접근이 공간적인 측면에서 더 효율적
+# 2개의 값을 가진다고 무조건 class 구현보다 순서정보면 enumerate 활용이 효율적
+# 프린터 큐 (1966) 에서 활용해봄
+
 import sys
 from collections import deque
 
